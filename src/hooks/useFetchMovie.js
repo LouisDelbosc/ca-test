@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import { movieFetch } from "../moviefetch";
 
+const MAX_DIGIT = 9;
+const MIN_DIGIT = 0;
+
+const isSingleDigit = number => number <= MAX_DIGIT && number > MIN_DIGIT;
+
 export function getDate(date = new Date()) {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
   return [
     year,
-    month > 9 ? month : `0${month}`,
-    day > 9 ? day : `0${day}`
+    isSingleDigit(month) ? `0${month}` : month,
+    isSingleDigit(day) ? `0${day}` : day
   ].join("-");
 }
 

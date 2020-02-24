@@ -12,6 +12,25 @@ function displayListProperty(movie, property, key) {
   return list.length === 0 ? " - " : list;
 }
 
+function computeMovieData(movie) {
+  return [
+    {
+      title: "Pays",
+      value: displayListProperty(movie, "production_countries", "name")
+    },
+    { title: "Budget", value: displayProperty(movie, "budget", "$") },
+    { title: "Revenue", value: displayProperty(movie, "revenue", "$") },
+    {
+      title: "Note",
+      value: `${displayProperty(movie, "vote_average") * 10}/100`
+    },
+    { title: "Genres", value: displayListProperty(movie, "genres", "name") },
+    { title: "Date de sortie", value: displayProperty(movie, "release_date") },
+    { title: "Durée", value: displayProperty(movie, "runtime") },
+    { title: "Synopsis", value: displayProperty(movie, "overview") }
+  ];
+}
+
 const containerStyle = {
   display: "flex",
   flexDirection: "column",
@@ -32,25 +51,14 @@ export function MovieDetails(props) {
     };
     fetchData();
   }, [movieId]);
+
   return (
     <div>
       <h1>{movie && displayProperty(movie, "title")}</h1>
       {movie && (
         <>
           <div style={containerStyle}>
-            {[
-              [
-                "Pays",
-                displayListProperty(movie, "production_countries", "name")
-              ],
-              ["Budget", displayProperty(movie, "budget", "$")],
-              ["Revenue", displayProperty(movie, "revenue", "$")],
-              ["Note", `${displayProperty(movie, "vote_average") * 10}/100`],
-              ["Genres", displayListProperty(movie, "genres", "name")],
-              ["Date de sortie", displayProperty(movie, "release_date")],
-              ["Durée", displayProperty(movie, "runtime")],
-              ["Synopsis", displayProperty(movie, "overview")]
-            ].map(([title, value]) => (
+            {computeMovieData(movie).map(({title, value}) => (
               <div key={title} style={divElemStyle}>
                 {title} : {value}
               </div>

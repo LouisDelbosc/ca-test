@@ -11,6 +11,5 @@ export const movieFetch = (path, options) => {
     (acc, val) => `${acc}&${val}=${withDefaultOptions[val]}`,
     `api_key=${API_KEY}`
   );
-  return fetch(`${URL}${path}?${queryParams}`)
-    .then(res => res.json());
+  return fetch(`${URL}${path}?${queryParams}`).then(res => res.json());
 };
