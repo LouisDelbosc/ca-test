@@ -22,7 +22,6 @@ export function objectToString(options) {
 export function useFetchMovie(options) {
   const [movies, setMovies] = useState([]);
   const withDefaultOptions = {
-    sort_by: "primary_release_date.desc",
     "primary_release_date.lte": getDate(),
     ...(options || {})
   };
