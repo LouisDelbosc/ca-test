@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFetchMovie } from "../hooks/useFetchMovie";
-import { Link } from "react-router-dom";
+import { MovieLink } from "../components/movieLink";
 
 export function Welcome(props) {
   const [isAsc, setAsc] = useState(false);
@@ -19,7 +19,7 @@ export function Welcome(props) {
         {movies &&
           movies.map(movie => (
             <li key={movie.id}>
-              <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+              <MovieLink id={movie.id}>{movie.title}</MovieLink>
             </li>
           ))}
       </ul>
