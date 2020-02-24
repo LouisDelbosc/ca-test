@@ -9,6 +9,13 @@ function getToday() {
   return [year, month > 9 ? month : `0${month}`, day > 9 ? day : `0{day}`].join("-");
 }
 
+function refreshFromObject(options) {
+  return Object.keys(options).reduce(
+    (acc, val) => `${acc}&${val}=${options[val]}`,
+    ""
+  );
+}
+
 export function useFetchMovie(options) {
   const [movies, setMovies] = useState([]);
   const withDefaultOptions = {
@@ -19,9 +26,9 @@ export function useFetchMovie(options) {
   useEffect(() => {
     const fetchData = async () => {
       const result = await movieFetch("/discover/movie", withDefaultOptions || {});
-      setMovies(result.results);
+      setMovies(result);
     };
     fetchData();
-  }, []);
+  }, [refreshFromObject(options)]);
   return [movies, setMovies];
 }

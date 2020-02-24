@@ -1,7 +1,7 @@
-import React from 'react';
-import logo from './logo.svg';
-import {Welcome} from "./pages/welcome";
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import Router from "./router";
+import "./App.css";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <Welcome />
+      <Router />
     </div>
   );
 }

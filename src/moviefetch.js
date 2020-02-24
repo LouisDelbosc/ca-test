@@ -5,12 +5,13 @@ export const movieFetch = (path, options) => {
     language: "fr-FR",
     include_adult: false,
     include_video: false,
-    ...options,
+    ...options
   };
-  const queryParams = Object.keys(withDefaultOptions)
-        .reduce(
-          (acc, val) => `${acc}&${val}=${withDefaultOptions[val]}`,
-          `api_key=${API_KEY}`
-        );
-  return fetch(`${URL}${path}?${queryParams}`).then(res => res.json());
+  const queryParams = Object.keys(withDefaultOptions).reduce(
+    (acc, val) => `${acc}&${val}=${withDefaultOptions[val]}`,
+    `api_key=${API_KEY}`
+  );
+  return fetch(`${URL}${path}?${queryParams}`)
+    .then(res => res.json())
+    .then(json => json.results);
 };
