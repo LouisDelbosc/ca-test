@@ -35,6 +35,6 @@ export function useFetchMovie(options) {
       setMovies(json.results);
     };
     fetchData();
-  }, [objectToString(options)]);
+  }, [objectToString(withDefaultOptions)]);
   return [movies, setMovies];
 }
