@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useFetchMovie } from "../hooks/useFetchMovie";
+import { useSelector } from "react-redux";
+import { useFetchMovies } from "../hooks/useFetchMovie";
 import { MovieLink } from "../components/movieLink";
 
 const NO_FILTER = "none";
@@ -12,11 +13,24 @@ export function Welcome(props) {
           sort_by: `primary_release_date.${filter}`
         }
       : {};
-  const [movies, _setMovies] = useFetchMovie(options);
+  const [movies, _setMovies] = useFetchMovies(options);
+  const { favoriteMovies } = useSelector(state => state.movies);
   return (
     <div>
-      <h1>Welcome</h1>
-      <h3>Latest movies</h3>
+      <h1>Bienvenue</h1>
+      <h3>Films Favoris</h3>
+      {favoriteMovies.length !== 0 ? (
+        <ul>
+          {favoriteMovies.map(movie => (
+            <li key={movie.id}>
+              <MovieLink id={movie.id}>{movie.title}</MovieLink>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div>Pas de films favoris</div>
+      )}
+      <h3>Films</h3>
       <label htmlFor="selectId">
         Filtres
         <select id="selectId" onChange={event => setFilter(event.target.value)}>

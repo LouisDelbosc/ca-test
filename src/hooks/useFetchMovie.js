@@ -24,7 +24,7 @@ export function objectToString(options) {
   );
 }
 
-export function useFetchMovie(options) {
+export function useFetchMovies(options) {
   const [movies, setMovies] = useState([]);
   const withDefaultOptions = {
     "primary_release_date.lte": getDate(),
@@ -41,4 +41,17 @@ export function useFetchMovie(options) {
     fetchData();
   }, [objectToString(withDefaultOptions)]);
   return [movies, setMovies];
+}
+
+export function useFetchMovie(movieId) {
+  const [movie, setMovie] = useState();
+  useEffect(() => {
+
+    const fetchData = async () => {
+      const json = await movieFetch(`/movie/${movieId}`);
+      setMovie(json);
+    };
+    fetchData();
+  }, [movieId]);
+  return movie;
 }

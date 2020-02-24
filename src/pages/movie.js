@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { movieFetch } from "../moviefetch";
+import { useFetchMovie } from "../hooks/useFetchMovie.js";
 import { MovieSuggestions } from "../components/movieSuggestions";
+import { addMovie, removeMovie } from "../redux/moviesDucks";
 
 function displayProperty(movie, property, prefix = "") {
   return movie[property] ? `${prefix}${movie[property]}` : " - ";
@@ -43,22 +45,24 @@ const divElemStyle = {
 
 export function MovieDetails(props) {
   const { movieId } = useParams();
-  const [movie, setMovie] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      const json = await movieFetch(`/movie/${movieId}`);
-      setMovie(json);
-    };
-    fetchData();
-  }, [movieId]);
+  const movie = useFetchMovie(movieId);
+  const dispatch = useDispatch();
+  const isFavorite = Boolean(
+    useSelector(({ movies }) => movies.favoriteMovies.find(movie => movie.id === movieId))
+  );
 
   return (
     <div>
       <h1>{movie && displayProperty(movie, "title")}</h1>
+      {!isFavorite ? (
+        <button onClick={() => dispatch(addMovie(movie))}>Ajouter aux favoris</button>
+      ) : (
+        <button onClick={() => dispatch(removeMovie(movie))}>Retirer des favoris</button>
+      )}
       {movie && (
         <>
           <div style={containerStyle}>
-            {computeMovieData(movie).map(({title, value}) => (
+            {computeMovieData(movie).map(({ title, value }) => (
               <div key={title} style={divElemStyle}>
                 {title} : {value}
               </div>
