@@ -1,15 +1,18 @@
-import {useState, useEffect} from "react";
-import {movieFetch} from "../moviefetch";
+import { useState, useEffect } from "react";
+import { movieFetch } from "../moviefetch";
 
-function getToday() {
-  const date = new Date();
+export function getDate(date = new Date()) {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  return [year, month > 9 ? month : `0${month}`, day > 9 ? day : `0{day}`].join("-");
+  return [
+    year,
+    month > 9 ? month : `0${month}`,
+    day > 9 ? day : `0${day}`
+  ].join("-");
 }
 
-function refreshFromObject(options) {
+export function objectToString(options) {
   return Object.keys(options).reduce(
     (acc, val) => `${acc}&${val}=${options[val]}`,
     ""
@@ -20,15 +23,18 @@ export function useFetchMovie(options) {
   const [movies, setMovies] = useState([]);
   const withDefaultOptions = {
     sort_by: "primary_release_date.desc",
-    "primary_release_date.lte": getToday(),
-    ...(options || {}),
+    "primary_release_date.lte": getDate(),
+    ...(options || {})
   };
   useEffect(() => {
     const fetchData = async () => {
-      const result = await movieFetch("/discover/movie", withDefaultOptions || {});
-      setMovies(result);
+      const json = await movieFetch(
+        "/discover/movie",
+        withDefaultOptions || {}
+      );
+      setMovies(json.results);
     };
     fetchData();
-  }, [refreshFromObject(options)]);
+  }, [objectToString(options)]);
   return [movies, setMovies];
 }
