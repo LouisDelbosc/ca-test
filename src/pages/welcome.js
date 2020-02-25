@@ -15,40 +15,67 @@ export function Welcome(props) {
       : {};
   const [movies, _setMovies] = useFetchMovies(options);
   const { favoriteMovies } = useSelector(state => state.movies);
+  const handleClick = value => () => setFilter(value);
   return (
-    <div>
-      <h1>Bienvenue</h1>
-      <h3>Films Favoris</h3>
-      {favoriteMovies.length !== 0 ? (
-        <ul>
-          {favoriteMovies.map(movie => (
-            <li key={movie.id}>
-              <MovieLink id={movie.id}>{movie.title}</MovieLink>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div>Pas de films favoris</div>
-      )}
-      <h3>Films</h3>
-      <label htmlFor="selectId">
-        Filtres
-        <select id="selectId" onChange={event => setFilter(event.target.value)}>
-          <option value={NO_FILTER}>None</option>
-          <option value="desc">Derniere sorties</option>
-          <option value="asc">Premiere sorties</option>
-        </select>
-      </label>
-      <ul>
-        {movies &&
-          movies.map(movie =>
-            movie ? (
-              <li key={movie.id}>
-                <MovieLink id={movie.id}>{movie.title}</MovieLink>
-              </li>
-            ) : null
+    <div className="container">
+      <div className="card">
+        <h3 className="card-header">Films Favoris</h3>
+        <div className="card-body">
+          {favoriteMovies.length !== 0 ? (
+            <div className="list-group">
+              {favoriteMovies.map(movie => (
+                <MovieLink key={movie.id} id={movie.id}>
+                  {movie.title}
+                </MovieLink>
+              ))}
+            </div>
+          ) : (
+            <div className="card-text">Selectionner des films en favoris</div>
           )}
-      </ul>
+        </div>
+      </div>
+      <div className="container">
+        <div className="card">
+          <div className="card-header">
+            <h3>Films</h3>
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Trier par
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" onClick={handleClick(NO_FILTER)}>
+                  Pertinence
+                </a>
+                <a class="dropdown-item" href="#" onClick={handleClick("asc")}>
+                  Derniere sorties
+                </a>
+                <a class="dropdown-item" href="#" onClick={handleClick("desc")}>
+                  Premiere sorties
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="card-body">
+            <div className="card-text list-group list-group-flush">
+              {movies &&
+                movies.map(movie =>
+                  movie ? (
+                    <MovieLink key={movie.id} id={movie.id}>
+                      {movie.title}
+                    </MovieLink>
+                  ) : null
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

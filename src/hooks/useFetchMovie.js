@@ -18,10 +18,7 @@ export function getDate(date = new Date()) {
 }
 
 export function objectToString(options) {
-  return Object.keys(options).reduce(
-    (acc, val) => `${acc}&${val}=${options[val]}`,
-    ""
-  );
+  return Object.keys(options).reduce((acc, val) => `${acc}&${val}=${options[val]}`, "");
 }
 
 export function useFetchMovies(options) {
@@ -32,10 +29,7 @@ export function useFetchMovies(options) {
   };
   useEffect(() => {
     const fetchData = async () => {
-      const json = await movieFetch(
-        "/discover/movie",
-        withDefaultOptions || {}
-      );
+      const json = await movieFetch("/discover/movie", withDefaultOptions || {});
       setMovies(json.results);
     };
     fetchData();
@@ -46,7 +40,6 @@ export function useFetchMovies(options) {
 export function useFetchMovie(movieId) {
   const [movie, setMovie] = useState();
   useEffect(() => {
-
     const fetchData = async () => {
       const json = await movieFetch(`/movie/${movieId}`);
       setMovie(json);

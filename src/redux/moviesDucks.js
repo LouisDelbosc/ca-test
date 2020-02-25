@@ -30,13 +30,13 @@ export function moviesReducer(state = initialState, action) {
 export function addMovie({ id, title }) {
   return {
     type: ADD_MOVIE,
-    payload: { id: id.toString(), title }
+    payload: { id, title }
   };
 }
 
 export function removeMovie({ id }) {
   return {
     type: REMOVE_MOVIE,
-    payload: { id: id.toString() }
+    payload: { id }
   };
 }

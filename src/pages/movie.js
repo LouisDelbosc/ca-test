@@ -33,44 +33,54 @@ function computeMovieData(movie) {
   ];
 }
 
-const containerStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "start"
-};
-
 const divElemStyle = {
   textAlign: "left"
 };
 
+export function FavoriteButton({ movie }) {
+  const dispatch = useDispatch();
+  const favoriteMovies = useSelector(({ movies }) => movies.favoriteMovies);
+  const isFavorite = Boolean(favoriteMovies.find(favMovie => favMovie.id === movie.id));
+  return !isFavorite ? (
+    <a href="#" className="badge badge-pill badge-dark" onClick={() => dispatch(addMovie(movie))}>
+      Ajouter aux Favoris
+    </a>
+  ) : (
+    <a
+      href="#"
+      className="badge badge-pill badge-primary"
+      onClick={() => dispatch(removeMovie(movie))}
+    >
+      Favoris
+    </a>
+  );
+}
+
 export function MovieDetails(props) {
   const { movieId } = useParams();
   const movie = useFetchMovie(movieId);
-  const dispatch = useDispatch();
-  const isFavorite = Boolean(
-    useSelector(({ movies }) => movies.favoriteMovies.find(movie => movie.id === movieId))
-  );
-
   return (
-    <div>
-      <h1>{movie && displayProperty(movie, "title")}</h1>
-      {!isFavorite ? (
-        <button onClick={() => dispatch(addMovie(movie))}>Ajouter aux favoris</button>
-      ) : (
-        <button onClick={() => dispatch(removeMovie(movie))}>Retirer des favoris</button>
-      )}
+    <>
       {movie && (
         <>
-          <div style={containerStyle}>
-            {computeMovieData(movie).map(({ title, value }) => (
-              <div key={title} style={divElemStyle}>
-                {title} : {value}
-              </div>
-            ))}
+          <div className="container card">
+            <div style={{ alignItems: "center" }} className="card-header row">
+              <h5 style={{ marginRight: "0.5rem" }}>{movie && displayProperty(movie, "title")}</h5>
+              <h6 className="">
+                <FavoriteButton movie={movie} />
+              </h6>
+            </div>
+            <div className="card-body">
+              {computeMovieData(movie).map(({ title, value }) => (
+                <div className="card-text" key={title}>
+                  {title} : {value}
+                </div>
+              ))}
+            </div>
           </div>
           <MovieSuggestions id={movie.id} />
         </>
       )}
-    </div>
+    </>
   );
 }

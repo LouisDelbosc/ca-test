@@ -29,20 +29,26 @@ export function MovieSuggestions({ id }) {
     fetchData();
   }, [id, page]);
   return suggestions.length !== 0 ? (
-    <div>
-      Suggestions:
-      <ul>
-        {suggestions.map(movie => (
-          <li key={movie.id}>
-            <MovieLink id={movie.id}>{movie.title}</MovieLink>
-          </li>
-        ))}
-      </ul>
-      {!maxPage ? (
-        <button onClick={() => setPage(curr => curr + 1)}>
-          Plus de suggestions
-        </button>
-      ) : null}
+    <div className="container col-6">
+      <div className="card">
+        <h5 className="card-header">Suggestions:</h5>
+        <div className="card-body">
+          <div className="card-text list-group list-group-flush">
+            {suggestions.map(movie => (
+              <MovieLink key={movie.id} id={movie.id}>
+                {movie.title}
+              </MovieLink>
+            ))}
+          </div>
+        </div>
+        {!maxPage ? (
+          <div className="card-footer">
+            <button className="btn btn-primary" onClick={() => setPage(curr => curr + 1)}>
+              Plus de suggestions
+            </button>
+          </div>
+        ) : null}
+      </div>
     </div>
   ) : (
     <div>Pas de suggestions</div>
